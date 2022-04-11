@@ -1,5 +1,4 @@
 import React from 'react';
-import { threadId } from 'worker_threads';
 
 interface State {
   countries: string[],
@@ -19,8 +18,6 @@ class DomainFilter extends React.Component<Props, State> {
       classifications: [],
       subClassifications: []
     }
-
-    const s: any = {};
 
     for(let i = 0; i < domains.length; i++) {
       if (this.state.countries.indexOf(domains[i].substring(0,2)) <= 0) {
