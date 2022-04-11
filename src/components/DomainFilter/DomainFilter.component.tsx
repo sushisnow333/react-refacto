@@ -11,19 +11,26 @@ interface Props {
 }
 
 class DomainFilter extends React.Component<Props, State> {
-  componentDidMount() {
-    const { domains } = this.props
+
+  constructor(props: Props | Readonly<Props>) {
+    super(props);
     this.state = {
       countries: [],
       classifications: [],
       subClassifications: []
     }
+  }
+
+
+  componentDidMount() {
+    const { domains } = this.props
+    
 
     for(let i = 0; i < domains.length; i++) {
       if (this.state.countries.indexOf(domains[i].substring(0,2)) <= 0) {
         this.state.countries.push(domains[i].substring(0,2))
       }
-      this.state.classifications.push(domains[i].substring(3,5));
+     this.state.classifications.push(domains[i].substring(3,5));
       let flag = false;
       for(let j = 0; j < this.state.subClassifications.length; j++) {
         if (this.state.subClassifications[j] == domains[i].substring(6)) {
@@ -36,11 +43,13 @@ class DomainFilter extends React.Component<Props, State> {
       }
     }
 
+
     this.setState({
       ...this.state,
       classifications: this.state.classifications.filter((e, i, l) => l.indexOf(e) === i),
     })
     this.forceUpdate()
+    
   }
 
   render() {
