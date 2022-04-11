@@ -23,30 +23,13 @@ class DomainFilter extends React.Component<Props, State> {
 
 
   componentDidMount() {
-    const { domains } = this.props
-    
-
-    for(let i = 0; i < domains.length; i++) {
-      if (this.state.countries.indexOf(domains[i].substring(0,2)) <= 0) {
-        this.state.countries.push(domains[i].substring(0,2))
-      }
-     this.state.classifications.push(domains[i].substring(3,5));
-      let flag = false;
-      for(let j = 0; j < this.state.subClassifications.length; j++) {
-        if (this.state.subClassifications[j] == domains[i].substring(6)) {
-          flag = true
-          break;
-        }
-      }
-      if (!flag) {
-        this.state.subClassifications.push(domains[i].substring(6));
-      }
-    }
+      
+    const state:State = this.computeState(this.props, this.state)
 
 
     this.setState({
-      ...this.state,
-      classifications: this.state.classifications.filter((e, i, l) => l.indexOf(e) === i),
+      ...state,
+      classifications: state.classifications.filter((e, i, l) => l.indexOf(e) === i),
     })
     this.forceUpdate()
     
@@ -77,6 +60,27 @@ class DomainFilter extends React.Component<Props, State> {
       </select>
     </>)
   }
+
+  private computeState(domain: Props, state: State) : State {
+    for(let i = 0; i < domain.domains.length; i++) {
+      if (state.countries.indexOf(domain.domains[i].substring(0,2)) <= 0) {
+        state.countries.push(domain.domains[i].substring(0,2))
+      }
+      state.classifications.push(domain.domains[i].substring(3,5));
+      let flag = false;
+      for(let j = 0; j < state.subClassifications.length; j++) {
+        if (state.subClassifications[j] === domain.domains[i].substring(6)) {
+          flag = true
+          break;
+        }
+      }
+      if (!flag) {
+        state.subClassifications.push(domain.domains[i].substring(6));
+      }
+    }
+    return state
+  }
+
 }
 
 export default DomainFilter
